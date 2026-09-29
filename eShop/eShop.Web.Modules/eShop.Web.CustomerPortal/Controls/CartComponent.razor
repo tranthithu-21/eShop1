@@ -1,0 +1,33 @@
+@using eShop.UseCases.PluginInterfaces.StateStore
+@inject IShoppingCartStateStore shoppingCartStateStore
+@implements IDisposable
+
+<a href="/cart" class="nav-link text-white">
+    <i class="bi bi-cart3 fs-5"></i>
+    <span class="ms-1">Cart</span>
+    @if(itemsCount > 0)
+    {
+        <span class="cart-badge ms-2 shadow-sm">@itemsCount</span>
+    }
+</a>
+
+@code {
+    private int itemsCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        shoppingCartStateStore.AddStateChangeListeners(StateChangeAction);
+        itemsCount = await shoppingCartStateStore.GetItemsCount();
+    }
+
+    private async void StateChangeAction()
+    {
+        itemsCount = await shoppingCartStateStore.GetItemsCount();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        shoppingCartStateStore.RemoveStateChangeListeners(StateChangeAction);
+    }
+}

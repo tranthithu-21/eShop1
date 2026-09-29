@@ -1,0 +1,55 @@
+@using eShop.CoreBusiness.Models
+@using eShop.UseCases.ShoppingCartScreen.interfaces
+
+@inject IDeleteProductUseCase deleteProductUseCase
+@inject IUpdateQuantityUseCase updateQuantityUseCase
+
+@if (LineItem != null && LineItem.Product != null)
+{
+    <div class="row align-items-center">
+        <div class="col-4 col-md-2 text-center">
+            <img src="@LineItem.Product.ImageLink" alt="@LineItem.Product.Name" class="img-fluid rounded shadow-sm" style="max-height: 90px; object-fit: contain;" />
+        </div>
+        <div class="col-5 col-md-7">
+            <h5 class="mb-1 fw-semibold text-dark">@LineItem.Product.Name</h5>
+            <div class="d-flex align-items-center mt-2">
+                <span class="me-2 text-muted small">Qty:</span>
+                <input type="number" min="1" value="@LineItem.Quantity" @onchange="HandleQuantityChange" class="form-control form-control-sm text-center shadow-none border-secondary-subtle" style="width: 70px; border-radius: 6px;" />
+            </div>
+            <div class="text-muted small mt-1">
+                @LineItem.Product.Price.ToString("c") each
+            </div>
+        </div>
+        <div class="col-3 col-md-3 text-end d-flex flex-column align-items-end justify-content-between">
+            <button type="button" class="btn btn-outline-danger btn-sm px-2 py-1 mb-2" @onclick="DeleteProduct" title="Remove item">
+                <i class="bi bi-trash3"></i> Remove
+            </button>
+            <span class="fw-bold price-tag d-block mt-2">@((LineItem.Product.Price * LineItem.Quantity).ToString("c"))</span>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public OrderLineItem LineItem { get; set; }
+
+    [Parameter]
+    public EventCallback<Order> OnItemUpdated { get; set; }
+
+    private async Task HandleQuantityChange(ChangeEventArgs e)
+    {
+        if (e.Value == null || string.IsNullOrWhiteSpace(e.Value.ToString())) return;
+        if (int.TryParse(e.Value.ToString(), out int qty))
+        {
+            if (qty < 1) return;
+            var order = await updateQuantityUseCase.Execute(LineItem.ProductId, qty);
+            await OnItemUpdated.InvokeAsync(order);
+        }
+    }
+
+    private async Task DeleteProduct()
+    {
+        var order = await deleteProductUseCase.Execute(LineItem.ProductId);
+        await OnItemUpdated.InvokeAsync(order);
+    }
+}

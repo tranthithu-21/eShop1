@@ -1,0 +1,62 @@
+@page "/placeOrder"
+
+@using eShop.CoreBusiness.Models
+@using eShop.UseCases.ShoppingCartScreen.interfaces
+@using eShop.Web.CustomerPortal.ViewModels
+
+@inject IViewShoppingCartUseCase viewShoppingCartUseCase
+@inject IPlaceOrderUseCase placeOrderUseCase
+@inject NavigationManager navigationManager
+
+<div class="container mt-4 mb-5">
+    <h3 class="fw-bold mb-4"><i class="bi bi-credit-card text-primary"></i> Checkout</h3>
+
+    @if (order != null && order.LineItems != null && order.LineItems.Count > 0)
+    {
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <div class="card p-4 shadow-sm border-0 rounded-4">
+                    <h5 class="fw-bold mb-4">Shipping Information</h5>
+                    <CustomerFormComponent OnCustomerInfoSubmitted="HandleCustomerInfoSubmitted"></CustomerFormComponent>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="sticky-top" style="top: 20px;">
+                    <OrderSummaryComponent Order="order" HidePlaceOrderButton="true"></OrderSummaryComponent>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x text-muted" style="font-size: 4rem;"></i>
+            <h4 class="mt-3 text-muted">Your shopping cart is empty.</h4>
+            <a href="/" class="btn btn-primary mt-3 px-4 rounded-pill">Continue Shopping</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Order order;
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await viewShoppingCartUseCase.Execute();
+    }
+
+    private async Task HandleCustomerInfoSubmitted(CustomerViewModel customer)
+    {
+        order.CustomerName = customer.CustomerName;
+        order.CustomerAddress = customer.CustomerAddress;
+        order.CustomerCity = customer.CustomerCity;
+        order.CustomerStateProvince = customer.CustomerStateProvince;
+        order.CustomerCountry = customer.CustomerCountry;
+
+        var uniqueId = await placeOrderUseCase.Execute(order);
+        if (!string.IsNullOrWhiteSpace(uniqueId))
+        {
+            navigationManager.NavigateTo($"/orderconfirm/{uniqueId}");
+        }
+    }
+}

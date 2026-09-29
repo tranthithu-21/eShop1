@@ -1,0 +1,42 @@
+@using eShop.CoreBusiness.Models
+
+@if (Order != null && Order.LineItems != null && Order.LineItems.Count > 0)
+{
+    <div class="card order-summary-card p-4 shadow-sm rounded-4">
+        <h5 class="fw-bold mb-4">Order Summary</h5>
+        <div class="d-flex justify-content-between mb-3 text-muted">
+            <span>Items (@itemsCount):</span>
+            <span class="text-dark fw-medium">@itemsTotal.ToString("c")</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3 text-muted">
+            <span>Shipping & Handling:</span>
+            <span class="text-success fw-medium">Free</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3 text-muted">
+            <span>Estimated Tax:</span>
+            <span class="text-dark fw-medium">$0.00</span>
+        </div>
+        <hr class="my-4" />
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="fw-bold fs-5">Order Total:</span>
+            <span class="price-tag fs-3">@itemsTotal.ToString("c")</span>
+        </div>
+        @if (!HidePlaceOrderButton)
+        {
+            <div class="d-grid mt-2">
+                <a href="/placeOrder" class="btn btn-primary btn-lg rounded-pill fw-bold">Proceed to Checkout <i class="bi bi-arrow-right ms-2"></i></a>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Order Order { get; set; }
+
+    [Parameter]
+    public bool HidePlaceOrderButton { get; set; } = false;
+
+    private int itemsCount => Order?.LineItems?.Sum(x => x.Quantity) ?? 0;
+    private double itemsTotal => Order?.LineItems?.Sum(x => x.Price * x.Quantity) ?? 0;
+}

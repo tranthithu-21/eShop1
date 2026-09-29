@@ -1,0 +1,44 @@
+@using eShop.Web.CustomerPortal.ViewModels
+
+<EditForm Model="Customer" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger p-2 rounded-3 mb-4 text-sm" />
+
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="form-label fw-medium text-muted small">Full Name</label>
+            <InputText @bind-Value="Customer.CustomerName" class="form-control form-control-lg bg-light border-0 shadow-sm" placeholder="John Doe"></InputText>
+        </div>
+        <div class="col-12">
+            <label class="form-label fw-medium text-muted small">Street Address</label>
+            <InputText @bind-Value="Customer.CustomerAddress" class="form-control form-control-lg bg-light border-0 shadow-sm" placeholder="123 Main St"></InputText>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-medium text-muted small">City</label>
+            <InputText @bind-Value="Customer.CustomerCity" class="form-control form-control-lg bg-light border-0 shadow-sm"></InputText>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-medium text-muted small">State/Province</label>
+            <InputText @bind-Value="Customer.CustomerStateProvince" class="form-control form-control-lg bg-light border-0 shadow-sm"></InputText>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-medium text-muted small">Country</label>
+            <InputText @bind-Value="Customer.CustomerCountry" class="form-control form-control-lg bg-light border-0 shadow-sm"></InputText>
+        </div>
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm">Confirm & Place Order <i class="bi bi-check-circle ms-2"></i></button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<CustomerViewModel> OnCustomerInfoSubmitted { get; set; }
+
+    private CustomerViewModel Customer { get; set; } = new CustomerViewModel();
+
+    private async Task HandleValidSubmit()
+    {
+        await OnCustomerInfoSubmitted.InvokeAsync(Customer);
+    }
+}
