@@ -4,7 +4,14 @@
 <tr>
     <td>@Order.DatePlaced?.ToString("yyyy-MM-dd")</td>
     <td>
-        <a href="/orderdetail/@Order.OrderId">@Order.OrderId</a>
+        @if (Order.DateProcessed.HasValue)
+        {
+            @Order.OrderId
+        }
+        else
+        {
+            <a href="/orderdetail/@Order.OrderId">@Order.OrderId</a>
+        }
     </td>
     <td>@Order.CustomerCountry</td>
     <td>@Order.CustomerStateProvince</td>
