@@ -2,21 +2,17 @@
 @inject NavigationManager NavigationManager
 
 <tr>
-    <td>@Order.DatePlaced?.ToString("MM/dd/yyyy hh:mm tt")</td>
-    <td>@Order.UniqueId</td>
-    <td>@Order.CustomerName</td>
-    <td>@Order.CustomerCity</td>
+    <td>@Order.DatePlaced?.ToString("yyyy-MM-dd")</td>
     <td>
-        <button class="btn btn-primary" @onclick="HandleViewDetail">View Detail</button>
+        <a href="/orderdetail/@Order.OrderId">@Order.OrderId</a>
     </td>
+    <td>@Order.CustomerCountry</td>
+    <td>@Order.CustomerStateProvince</td>
+    <td>@Order.CustomerCity</td>
+    <td>@Order.CustomerName</td>
 </tr>
 
 @code {
     [Parameter]
     public Order Order { get; set; }
-
-    private void HandleViewDetail()
-    {
-        NavigationManager.NavigateTo($"/admin/orderdetails/{Order.OrderId}");
-    }
 }

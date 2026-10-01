@@ -1,4 +1,4 @@
-@page "/admin/orderdetails/{OrderId:int}"
+@page "/orderdetail/{OrderId:int}"
 @using eShop.CoreBusiness.Models
 @using eShop.UseCases.AdminPortal.OrderDetailScreen.Interfaces
 @inject IViewOrderDetailUseCase ViewOrderDetailUseCase
@@ -70,7 +70,7 @@ else
         {
             // For now, hardcode "Admin" or get it from auth context later.
             ProcessOrderUseCase.Execute(order.OrderId.Value, "Admin");
-            NavigationManager.NavigateTo("/admin/outstandingorders");
+            NavigationManager.NavigateTo("/outstandingorders");
         }
     }
 }
