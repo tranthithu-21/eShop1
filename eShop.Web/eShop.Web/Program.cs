@@ -17,6 +17,14 @@ namespace eShop.Web
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+                
+            builder.Services.AddControllers();
+
+            builder.Services.AddAuthentication("eShop.CookieAuth").AddCookie("eShop.CookieAuth", options =>
+            {
+                options.Cookie.Name = "eShop.CookieAuth";
+            });
+            builder.Services.AddCascadingAuthenticationState();
 
             builder.Services.AddSingleton<IProductRepository, ProductRepository>();
             builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
@@ -49,6 +57,9 @@ namespace eShop.Web
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseStaticFiles();
             app.UseAntiforgery();
 
@@ -57,6 +68,8 @@ namespace eShop.Web
                     typeof(eShop.Web.CustomerPortal.Pages.SearchProductComponent).Assembly,
                     typeof(eShop.Web.AdminPortal.Pages.OutstandingOrdersComponent).Assembly)
                 .AddInteractiveServerRenderMode();
+
+            app.MapControllers();
 
             app.Run();
         }
