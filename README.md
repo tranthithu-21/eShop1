@@ -58,8 +58,33 @@ The project relies heavily on **Dependency Injection (DI)**. The `eShop.Web` pro
 
 ---
 
+## 🎯 Chi tiết các công việc đã thực hiện (Project Implementation Details)
+
+Nhằm đáp ứng yêu cầu khắt khe của một hệ thống e-commerce chuyên nghiệp và tuân thủ chặt chẽ mô hình **Clean Architecture** cũng như nguyên lý **SOLID**, các phân hệ và tính năng sau đã được xây dựng hoàn thiện trong đồ án:
+
+### 1. Phân hệ Giao diện & Tương tác (Presentation - Blazor)
+- **Phát triển Customer Portal Modules:** Xây dựng toàn bộ giao diện phía người dùng (Client-facing) với các thành phần tái sử dụng (Razor Components) như `ProductItemComponent`, `CartComponent`, `OrderSummaryComponent`, `CustomerFormComponent`.
+- **Hoàn thiện luồng mua sắm (Shopping Flow):**
+  - **Tìm kiếm và Duyệt sản phẩm:** Hiển thị danh mục sản phẩm, tìm kiếm theo tên và xem chi tiết sản phẩm.
+  - **Quản lý Giỏ hàng:** Tính năng thêm vào giỏ, cập nhật số lượng trực tiếp (Update Quantity) và xóa sản phẩm khỏi giỏ (Delete Product).
+  - **Tiến trình Đặt hàng:** Trang xác nhận thông tin người mua, tóm tắt đơn hàng và thực thi đặt hàng (Place Order).
+
+### 2. Tầng Ứng dụng & Lõi nghiệp vụ (Use Cases & Core Business)
+Phát triển các **Use Case** xử lý logic nghiệp vụ độc lập hoàn toàn với Framework giao diện và Cơ sở dữ liệu:
+- **Product Use Cases:** `ViewProductUseCase`, `SearchProductUseCase`.
+- **Shopping Cart Use Cases:** `ViewShoppingCartUseCase`, `UpdateQuantityUseCase`, `DeleteProductUseCase`, `AddProductToCartUseCase`.
+- **Order Processing:** `PlaceOrderUseCase` xử lý nghiệp vụ tạo đơn hàng, tính toán tổng tiền, và gán mã đơn hàng duy nhất.
+- Ứng dụng mạnh mẽ **Dependency Injection (DI)** thông qua việc định nghĩa các Interfaces (VD: `IPlaceOrderUseCase`, `IProductRepository`...) để nạp (inject) vào Blazor Components.
+
+### 3. Tầng Dữ liệu & Cơ sở hạ tầng (Infrastructure - Plugins)
+- Triển khai **Repository Pattern** chuyên nghiệp để giao tiếp với dữ liệu.
+- Hoàn thiện module `eShop.DataStore.HardCoded` cung cấp dữ liệu giả lập (Mock Data) chuẩn xác cho Danh mục sản phẩm (Products) và Lưu trữ Đơn hàng (Orders Repository).
+- Quản lý trạng thái State Management cho Shopping Cart an toàn và mượt mà trong quá trình người dùng duyệt web.
+
+---
+
 ## 👨‍🎓 Sinh viên thực hiện
 
-Dự án này được thực hiện và phát triển bởi:
+Dự án này được phân tích, thiết kế và phát triển bởi:
 - **Họ và tên:** Trần Thị Thu
 - **Mã sinh viên:** 23K4080049
