@@ -1,0 +1,22 @@
+@using eShop.CoreBusiness.Models
+@inject NavigationManager NavigationManager
+
+<tr>
+    <td>@Order.DatePlaced?.ToString("MM/dd/yyyy hh:mm tt")</td>
+    <td>@Order.UniqueId</td>
+    <td>@Order.CustomerName</td>
+    <td>@Order.CustomerCity</td>
+    <td>
+        <button class="btn btn-primary" @onclick="HandleViewDetail">View Detail</button>
+    </td>
+</tr>
+
+@code {
+    [Parameter]
+    public Order Order { get; set; }
+
+    private void HandleViewDetail()
+    {
+        NavigationManager.NavigateTo($"/admin/orderdetails/{Order.OrderId}");
+    }
+}

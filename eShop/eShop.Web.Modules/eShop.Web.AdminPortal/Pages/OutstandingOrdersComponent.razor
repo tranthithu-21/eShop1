@@ -1,0 +1,18 @@
+@page "/admin/outstandingorders"
+@using eShop.CoreBusiness.Models
+@using eShop.UseCases.AdminPortal.OutstandingOrdersScreen
+@using eShop.Web.AdminPortal.Controls
+@inject IViewOutstandingOrdersUseCase ViewOutstandingOrdersUseCase
+
+<h3>Outstanding Orders</h3>
+
+<OrderListComponent Orders="orders"></OrderListComponent>
+
+@code {
+    private IEnumerable<Order> orders;
+
+    protected override void OnInitialized()
+    {
+        orders = ViewOutstandingOrdersUseCase.Execute();
+    }
+}

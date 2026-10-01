@@ -34,7 +34,10 @@ namespace eShop.Web
             builder.Services.AddTransient<eShop.UseCases.ShoppingCartScreen.interfaces.IUpdateQuantityUseCase, eShop.UseCases.ShoppingCartScreen.UpdateQuantityUseCase>();
             builder.Services.AddTransient<eShop.UseCases.ShoppingCartScreen.interfaces.IPlaceOrderUseCase, eShop.UseCases.ShoppingCartScreen.PlaceOrderUseCase>();
             builder.Services.AddTransient<eShop.UseCases.OrderConfirmationScreen.interfaces.IViewOrderConfirmationUseCase, eShop.UseCases.OrderConfirmationScreen.ViewOrderConfirmationUseCase>();
-
+            builder.Services.AddTransient<eShop.UseCases.AdminPortal.OutstandingOrdersScreen.IViewOutstandingOrdersUseCase, eShop.UseCases.AdminPortal.OutstandingOrdersScreen.ViewOutstandingOrdersUseCase>();
+            builder.Services.AddTransient<eShop.UseCases.AdminPortal.ProcessedOrdersScreen.IViewProcessedOrdersUseCase, eShop.UseCases.AdminPortal.ProcessedOrdersScreen.ViewProcessedOrdersUseCase>();
+            builder.Services.AddTransient<eShop.UseCases.AdminPortal.OrderDetailScreen.Interfaces.IViewOrderDetailUseCase, eShop.UseCases.AdminPortal.OrderDetailScreen.ViewOrderDetailUseCase>();
+            builder.Services.AddTransient<eShop.UseCases.AdminPortal.OrderDetailScreen.Interfaces.IProcessOrderUseCase, eShop.UseCases.AdminPortal.OrderDetailScreen.ProcessOrderUseCase>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -51,7 +54,8 @@ namespace eShop.Web
 
             app.MapRazorComponents<App>()
                 .AddAdditionalAssemblies(
-                    typeof(eShop.Web.CustomerPortal.Pages.SearchProductComponent).Assembly)
+                    typeof(eShop.Web.CustomerPortal.Pages.SearchProductComponent).Assembly,
+                    typeof(eShop.Web.AdminPortal.Pages.OutstandingOrdersComponent).Assembly)
                 .AddInteractiveServerRenderMode();
 
             app.Run();

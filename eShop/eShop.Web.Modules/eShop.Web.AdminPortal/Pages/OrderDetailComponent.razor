@@ -1,0 +1,76 @@
+@page "/admin/orderdetails/{OrderId:int}"
+@using eShop.CoreBusiness.Models
+@using eShop.UseCases.AdminPortal.OrderDetailScreen.Interfaces
+@inject IViewOrderDetailUseCase ViewOrderDetailUseCase
+@inject IProcessOrderUseCase ProcessOrderUseCase
+@inject NavigationManager NavigationManager
+
+<h3>Order Detail</h3>
+
+@if (order != null)
+{
+    <p><b>Customer Name:</b> @order.CustomerName</p>
+    <p><b>Customer Address:</b> @order.CustomerAddress</p>
+    <p><b>Customer City:</b> @order.CustomerCity</p>
+    <p><b>Customer State/Province:</b> @order.CustomerStateProvince</p>
+    <p><b>Customer Country:</b> @order.CustomerCountry</p>
+    <p><b>Date Placed:</b> @order.DatePlaced?.ToString("MM/dd/yyyy hh:mm tt")</p>
+    
+    @if (order.DateProcessed.HasValue)
+    {
+        <p><b>Date Processed:</b> @order.DateProcessed.Value.ToString("MM/dd/yyyy hh:mm tt")</p>
+        <p><b>Processed By:</b> @order.AdminUser</p>
+    }
+
+    <h4>Order Items</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in order.LineItems)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.Price.ToString("c")</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!order.DateProcessed.HasValue)
+    {
+        <button class="btn btn-success" @onclick="ProcessOrder">Process Order</button>
+    }
+}
+else
+{
+    <p>Order not found.</p>
+}
+
+@code {
+    [Parameter]
+    public int OrderId { get; set; }
+
+    private Order order;
+
+    protected override void OnInitialized()
+    {
+        order = ViewOrderDetailUseCase.Execute(OrderId);
+    }
+
+    private void ProcessOrder()
+    {
+        if (order != null && !order.DateProcessed.HasValue)
+        {
+            // For now, hardcode "Admin" or get it from auth context later.
+            ProcessOrderUseCase.Execute(order.OrderId.Value, "Admin");
+            NavigationManager.NavigateTo("/admin/outstandingorders");
+        }
+    }
+}

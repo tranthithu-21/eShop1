@@ -1,0 +1,18 @@
+@page "/admin/processedorders"
+@using eShop.CoreBusiness.Models
+@using eShop.UseCases.AdminPortal.ProcessedOrdersScreen
+@using eShop.Web.AdminPortal.Controls
+@inject IViewProcessedOrdersUseCase ViewProcessedOrdersUseCase
+
+<h3>Processed Orders</h3>
+
+<OrderListComponent Orders="orders"></OrderListComponent>
+
+@code {
+    private IEnumerable<Order> orders;
+
+    protected override void OnInitialized()
+    {
+        orders = ViewProcessedOrdersUseCase.Execute();
+    }
+}
