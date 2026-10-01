@@ -1,4 +1,5 @@
 using eShop.CoreBusiness.Models;
+using System.Collections.Generic;
 
 namespace eShop.UseCases.PluginInterfaces.DataStore
 {
@@ -8,5 +9,7 @@ namespace eShop.UseCases.PluginInterfaces.DataStore
         Order GetOrderByUniqueId(string uniqueId);
         int CreateOrder(Order order);
         void UpdateOrder(Order order);
+        IEnumerable<Order> GetOutstandingOrders();
+        IEnumerable<Order> GetProcessedOrders();
     }
 }

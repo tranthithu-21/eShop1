@@ -40,5 +40,17 @@ namespace eShop.DataStore.HardCoded
                 orders[order.OrderId.Value] = order;
             }
         }
+
+        public IEnumerable<Order> GetOutstandingOrders()
+        {
+            var allOrders = orders.Values;
+            return allOrders.Where(x => x.DateProcessed == null);
+        }
+
+        public IEnumerable<Order> GetProcessedOrders()
+        {
+            var allOrders = orders.Values;
+            return allOrders.Where(x => x.DateProcessed != null);
+        }
     }
 }
