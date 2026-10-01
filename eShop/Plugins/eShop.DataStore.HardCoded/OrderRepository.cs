@@ -12,6 +12,29 @@ namespace eShop.DataStore.HardCoded
         public OrderRepository()
         {
             orders = new Dictionary<int, Order>();
+            
+            // Seed with default orders to match the teacher's output
+            orders.Add(1, new Order
+            {
+                OrderId = 1,
+                UniqueId = "1",
+                DatePlaced = new System.DateTime(2023, 6, 2),
+                CustomerName = "Long",
+                CustomerCity = "Hue",
+                CustomerStateProvince = "Hue",
+                CustomerCountry = "VN"
+            });
+
+            orders.Add(2, new Order
+            {
+                OrderId = 2,
+                UniqueId = "2",
+                DatePlaced = new System.DateTime(2023, 6, 2),
+                CustomerName = "Ha Ngoc Long",
+                CustomerCity = "Hue",
+                CustomerStateProvince = "Hue",
+                CustomerCountry = "VN"
+            });
         }
 
         public int CreateOrder(Order order)
