@@ -9,8 +9,11 @@
                 })">
 
     <Found Context="routeData">
-        <RouteView RouteData="@routeData"
-                   DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <p>Sorry, you're not authorized to reach this page. You need to log in.</p>
+            </NotAuthorized>
+        </AuthorizeRouteView>
 
         <FocusOnNavigate RouteData="@routeData"
                          Selector="h1" />

@@ -8,12 +8,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/outstandingorders">Outstanding Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/processedorders">Processed Orders</a>
-                </li>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/outstandingorders">Outstanding Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/processedorders">Processed Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout (@context.User.Identity?.Name)</a>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
                 <li class="nav-item">
                     <CartComponent />
                 </li>
